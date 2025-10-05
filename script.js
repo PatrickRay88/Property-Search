@@ -145,13 +145,14 @@ function performManualSearch() {
     const priceMax = document.getElementById('price-max').value;
     const bedrooms = document.getElementById('bedrooms-filter').value;
     const bathrooms = document.getElementById('bathrooms-filter').value;
+    const propertyType = document.getElementById('property-type-filter').value;
     
     if (!city || !state) {
         alert('Please enter both city and state to search for properties.');
         return;
     }
     
-    console.log('🔍 Manual search initiated:', { city, state, priceMin, priceMax, bedrooms, bathrooms });
+    console.log('🔍 Manual search initiated:', { city, state, priceMin, priceMax, bedrooms, bathrooms, propertyType });
     
     // Build query parameters for RentCast API
     let queryParams = `?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`;
@@ -159,15 +160,21 @@ function performManualSearch() {
     // Add status filter for active listings only - this is the main filter that works reliably
     queryParams += `&status=Active`;
     
+    // Add propertyType if specified (RentCast API supports this parameter)
+    if (propertyType) {
+        queryParams += `&propertyType=${encodeURIComponent(propertyType)}`;
+    }
+    
     console.log('🔍 Manual search URL parameters:', queryParams);
-    console.log('🔍 Client-side filters will be applied:', { priceMin, priceMax, bedrooms, bathrooms });
+    console.log('🔍 Client-side filters will be applied:', { priceMin, priceMax, bedrooms, bathrooms, propertyType });
     
     // Store filter criteria for client-side filtering
     window.manualSearchFilters = {
         priceMin: priceMin ? parseInt(priceMin) : null,
         priceMax: priceMax ? parseInt(priceMax) : null,
         bedrooms: bedrooms ? parseInt(bedrooms) : null,
-        bathrooms: bathrooms ? parseInt(bathrooms) : null
+        bathrooms: bathrooms ? parseInt(bathrooms) : null,
+        propertyType: propertyType || null
     };
     
     // Clear previous results and show loading
@@ -177,16 +184,30 @@ function performManualSearch() {
     fetchAndDisplayListings(queryParams);
 }
 
-function fillManualSearch(city, state, priceMin, priceMax, bedrooms, bathrooms) {
+function fillManualSearch(city, state, priceMin, priceMax, bedrooms, bathrooms, propertyType) {
     document.getElementById('manual-city').value = city || '';
     document.getElementById('manual-state').value = state || '';
     document.getElementById('price-min').value = priceMin || '';
     document.getElementById('price-max').value = priceMax || '';
     document.getElementById('bedrooms-filter').value = bedrooms || '';
     document.getElementById('bathrooms-filter').value = bathrooms || '';
+    document.getElementById('property-type-filter').value = propertyType || '';
     
     // Auto-search after filling
     setTimeout(() => performManualSearch(), 100);
+}
+
+function getPropertyTypeIcon(propertyType) {
+    const icons = {
+        'Single Family': '🏠',
+        'Condo': '🏢', 
+        'Townhouse': '🏘️',
+        'Multi-Family': '🏘️',
+        'Apartment': '🏬',
+        'Manufactured': '🚐',
+        'Land': '🏞️'
+    };
+    return icons[propertyType] || '🏠';
 }
 
 function showLoadingState() {
@@ -260,6 +281,10 @@ function createPropertyList(properties) {
                         <span class="stat-item">
                             <span class="stat-icon">📅</span>
                             <span class="stat-value">${property.daysOnMarket || 'N/A'} days</span>
+                        </span>
+                        <span class="stat-item">
+                            <span class="stat-icon">${getPropertyTypeIcon(property.propertyType)}</span>
+                            <span class="stat-value">${property.propertyType || 'Unknown'}</span>
                         </span>
                     </div>
                     <div class="property-action">
@@ -415,6 +440,12 @@ function applyManualFilters(properties, filters) {
         
         // Bathroom filtering  
         if (filters.bathrooms && property.bathrooms && property.bathrooms < filters.bathrooms) {
+            return false;
+        }
+        
+        // Property type filtering (exact match)
+        if (filters.propertyType && property.propertyType && property.propertyType !== filters.propertyType) {
+            console.log(`🔍 Filtering out ${property.propertyType}, looking for ${filters.propertyType}`);
             return false;
         }
         

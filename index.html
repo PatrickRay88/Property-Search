@@ -217,17 +217,31 @@
                                 <option value="4">4+</option>
                             </select>
                         </div>
+                        <div class="filter-group">
+                            <label for="property-type-filter">Property Type</label>
+                            <select id="property-type-filter" class="filter-select">
+                                <option value="">All Properties</option>
+                                <option value="Single Family">🏠 Single Family Home</option>
+                                <option value="Condo">🏢 Condominium</option>
+                                <option value="Townhouse">🏘️ Townhouse</option>
+                                <option value="Multi-Family">🏘️ Multi-Family (2-4 units)</option>
+                                <option value="Apartment">🏬 Apartment Complex (5+ units)</option>
+                                <option value="Manufactured">🚐 Manufactured/Mobile Home</option>
+                                <option value="Land">🏞️ Land Only</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="quick-search-presets">
                     <h4>🏠 Popular Searches</h4>
                     <div class="preset-buttons">
-                        <button class="preset-btn" onclick="fillManualSearch('Austin', 'TX', '', '400000', '3', '')">Austin Family Homes</button>
-                        <button class="preset-btn" onclick="fillManualSearch('Miami', 'FL', '', '500000', '2', '')">Miami Condos</button>
-                        <button class="preset-btn" onclick="fillManualSearch('Phoenix', 'AZ', '', '300000', '', '')">Phoenix Affordable</button>
-                        <button class="preset-btn" onclick="fillManualSearch('Denver', 'CO', '300000', '', '3', '')">Denver Family</button>
-                        <button class="preset-btn" onclick="fillManualSearch('Las Vegas', 'NV', '', '', '4', '')">Vegas Luxury</button>
+                        <button class="preset-btn" onclick="fillManualSearch('Austin', 'TX', '', '400000', '3', '', 'Single Family')">🏠 Austin Family Homes</button>
+                        <button class="preset-btn" onclick="fillManualSearch('Miami', 'FL', '', '500000', '2', '', 'Condo')">🏢 Miami Condos</button>
+                        <button class="preset-btn" onclick="fillManualSearch('Phoenix', 'AZ', '', '100000', '', '', 'Land')">🏞️ Phoenix Land</button>
+                        <button class="preset-btn" onclick="fillManualSearch('Denver', 'CO', '300000', '', '3', '', 'Townhouse')">🏘️ Denver Townhomes</button>
+                        <button class="preset-btn" onclick="fillManualSearch('Dallas', 'TX', '', '50000', '', '', 'Land')">🏞️ Texas Land Deals</button>
+                        <button class="preset-btn" onclick="fillManualSearch('Las Vegas', 'NV', '', '', '4', '', 'Single Family')">🏠 Vegas Luxury</button>
                     </div>
                 </div>
             </div>
