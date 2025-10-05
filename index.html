@@ -15,10 +15,11 @@
             <span class="setup-icon">🔑</span>
             <div class="setup-text">
                 <strong>AI Setup Required</strong>
-                <p>To use AI features, add your OpenAI API key to <code>ai-config.js</code>. 
-                   <a href="https://platform.openai.com/api-keys" target="_blank">Get API Key</a> | 
-                   <a href="./SETUP_GUIDE.md" target="_blank">Setup Guide</a>
-                </p>
+                <p>To use AI features, add your OpenAI API key to <code>ai-config.js</code>.</p>
+                <div class="setup-links">
+                   <a href="https://platform.openai.com/api-keys" target="_blank" class="setup-link-btn">🔑 Get API Key</a>
+                   <a href="./setup-guide.html" target="_blank" class="setup-link-btn">📖 Setup Guide</a>
+                </div>
             </div>
             <button class="setup-dismiss" onclick="dismissSetupBanner()">×</button>
         </div>
@@ -26,7 +27,13 @@
 
     <!-- AI Control Panel -->
     <div class="ai-control-panel" id="ai-control-panel">
-        <h2>🎛️ AI Features Dashboard</h2>
+        <div class="ai-dashboard-header">
+            <h2>🎛️ AI Features Dashboard</h2>
+            <div class="dashboard-controls">
+                <a href="./setup-guide.html" target="_blank" class="setup-guide-btn">📖 Setup Guide</a>
+                <button onclick="toggleBanner()" class="toggle-banner-btn">🔑 Show Setup Banner</button>
+            </div>
+        </div>
         <div class="ai-features-grid">
             <div class="ai-feature-card">
                 <div class="feature-header">

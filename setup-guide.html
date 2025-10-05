@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Features Setup Guide - Property Search</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #4a5568;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #667eea;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #4a5568;
+            margin-top: 25px;
+        }
+        .step-box {
+            background: linear-gradient(135deg, #f7fafc, #edf2f7);
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .code-box {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .highlight {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #e6fffa, #b2f5ea);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #38b2ac;
+        }
+        .back-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+        .back-link:hover {
+            transform: translateY(-2px);
+        }
+        .warning {
+            background: linear-gradient(135deg, #fed7d7, #feb2b2);
+            border-left: 4px solid #f56565;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        ol, ul {
+            padding-left: 20px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 AI Features Setup Guide</h1>
+        
+        <div class="highlight">
+            <strong>🔑 Quick Start:</strong> The app works perfectly without AI setup! AI features are optional enhancements that require an OpenAI API key.
+        </div>
+
+        <h2>Required API Keys</h2>
+
+        <h3>1. OpenAI API Key (Required for AI Features)</h3>
+
+        <div class="step-box">
+            <strong>Step 1: Get Your API Key</strong>
+            <ol>
+                <li>Go to <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Platform</a></li>
+                <li>Sign up or log in to your account</li>
+                <li>Navigate to "API Keys" in the left sidebar</li>
+                <li>Click "Create new secret key"</li>
+                <li>Copy the key (starts with <code>sk-...</code>)</li>
+                <li><strong>Important:</strong> Add billing information (required even for free tier)</li>
+            </ol>
+        </div>
+
+        <div class="step-box">
+            <strong>Step 2: Add Key to Configuration</strong>
+            <ol>
+                <li>Open <code>ai-config.js</code> in your project folder</li>
+                <li>Replace the placeholder with your actual key:</li>
+            </ol>
+            <div class="code-box">
+OPENAI_API_KEY: 'sk-your-actual-key-here',
+            </div>
+            <ol start="3">
+                <li>Save the file</li>
+            </ol>
+        </div>
+
+        <div class="step-box">
+            <strong>Step 3: Test the Setup</strong>
+            <ol>
+                <li>Refresh your browser (http://localhost:3000)</li>
+                <li>The orange setup banner should disappear</li>
+                <li>Try the AI Natural Language Search</li>
+                <li>Check browser console (F12) for confirmation messages</li>
+            </ol>
+        </div>
+
+        <h2>AI Features Overview</h2>
+
+        <div class="success">
+            <strong>✅ Currently Available:</strong> All 6 AI features are implemented and ready to use!
+        </div>
+
+        <div class="feature-list">
+            <div class="feature-card">
+                <strong>🗣️ Natural Language Search</strong>
+                <p>"Find 3 bedroom homes under 400k in Austin"</p>
+            </div>
+            <div class="feature-card">
+                <strong>🎯 Smart Recommendations</strong>
+                <p>Personalized property scoring based on your preferences</p>
+            </div>
+            <div class="feature-card">
+                <strong>📊 Market Intelligence</strong>
+                <p>Comprehensive market analysis and trends</p>
+            </div>
+            <div class="feature-card">
+                <strong>🔔 Auto Search Assistant</strong>
+                <p>Saved searches with automatic notifications</p>
+            </div>
+            <div class="feature-card">
+                <strong>💰 Investment Analyzer</strong>
+                <p>ROI calculations and cash flow analysis</p>
+            </div>
+            <div class="feature-card">
+                <strong>🏘️ Neighborhood Insights</strong>
+                <p>Area demographics, schools, and safety data</p>
+            </div>
+        </div>
+
+        <h2>Cost Information</h2>
+        <ul>
+            <li><strong>OpenAI API Cost:</strong> ~$0.002 per request (extremely cheap!)</li>
+            <li><strong>Monthly Budget:</strong> Set to $25 maximum in config</li>
+            <li><strong>Typical Usage:</strong> &lt;$5/month for heavy testing</li>
+        </ul>
+
+        <h2>Troubleshooting</h2>
+
+        <div class="warning">
+            <strong>⚠️ "API key not configured" messages:</strong>
+            <ol>
+                <li>Check that you added your actual OpenAI key to <code>ai-config.js</code></li>
+                <li>Ensure the key starts with <code>sk-</code></li>
+                <li>Refresh the browser after updating config</li>
+                <li>Check browser console (F12) for detailed error messages</li>
+            </ol>
+        </div>
+
+        <div class="step-box">
+            <strong>🔍 AI features not working:</strong>
+            <ol>
+                <li>Verify API key is valid at <a href="https://platform.openai.com/usage" target="_blank">OpenAI Usage Dashboard</a></li>
+                <li>Check that you have billing set up on your OpenAI account</li>
+                <li>Ensure features are enabled in <code>ai-config.js</code></li>
+                <li>Look for error messages in browser console (F12 → Console)</li>
+            </ol>
+        </div>
+
+        <div class="success">
+            <strong>✅ Fallback Mode:</strong>
+            <p>If API key is missing, the system automatically uses enhanced fallback parsing. You still get good search functionality without AI!</p>
+        </div>
+
+        <h2>Testing the Features</h2>
+        <ol>
+            <li><strong>Natural Language Search:</strong> Try "luxury condos under 500k in Miami"</li>
+            <li><strong>Smart Recommendations:</strong> Search properties and see AI scoring</li>
+            <li><strong>Market Intelligence:</strong> View market analysis for any search results</li>
+            <li><strong>Investment Analysis:</strong> Analyze properties for ROI potential</li>
+        </ol>
+
+        <h2>Security Note</h2>
+        <div class="warning">
+            <ul>
+                <li>Never commit your actual API keys to version control</li>
+                <li>Keep <code>ai-config.js</code> secure and don't share it</li>
+                <li>API keys should be environment variables in production</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="javascript:window.close()" class="back-link">← Back to Property Search</a>
+            <a href="/" class="back-link" style="margin-left: 10px;">🏠 Main App</a>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; color: #666;">
+            <p><strong>Need Help?</strong> Check the browser console (F12 → Console) for detailed logging and error messages.</p>
+        </div>
+    </div>
+</body>
+</html>

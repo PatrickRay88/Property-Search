@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function checkApiSetup() {
+    // Check if user has previously dismissed the banner
+    const bannerDismissed = localStorage.getItem('setup-banner-dismissed') === 'true';
+    
     // Check if OpenAI API key is properly configured
     const hasValidOpenAIKey = window.AI_CONFIG && 
                               window.AI_CONFIG.OPENAI_API_KEY && 
@@ -18,12 +21,34 @@ function checkApiSetup() {
     
     const setupBanner = document.getElementById('setup-banner');
     
-    if (!hasValidOpenAIKey && setupBanner) {
+    if (!hasValidOpenAIKey && !bannerDismissed && setupBanner) {
         setupBanner.style.display = 'block';
         console.log('🔑 API setup required - showing setup banner');
+        
+        // Add click handlers for the links in the banner
+        setupBanner.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A') {
+                console.log('🔗 Banner link clicked:', e.target.href);
+                
+                // Special handling for setup guide to ensure it opens
+                if (e.target.href.includes('setup-guide.html')) {
+                    console.log('🔧 Opening setup guide...');
+                    // Let the browser handle it normally first
+                    return true;
+                }
+                // OpenAI links work normally with target="_blank"
+            }
+        });
+        
     } else if (setupBanner) {
         setupBanner.style.display = 'none';
-        console.log('✅ API setup complete');
+        if (hasValidOpenAIKey) {
+            console.log('✅ API setup complete');
+            // Clear the dismissed flag if API is now configured
+            localStorage.removeItem('setup-banner-dismissed');
+        } else {
+            console.log('🚫 Setup banner dismissed by user');
+        }
     }
 }
 
@@ -31,6 +56,33 @@ function dismissSetupBanner() {
     const setupBanner = document.getElementById('setup-banner');
     if (setupBanner) {
         setupBanner.style.display = 'none';
+        // Store dismissal in localStorage to remember user's choice
+        localStorage.setItem('setup-banner-dismissed', 'true');
+        console.log('🚫 Setup banner dismissed by user');
+    }
+}
+
+function openSetupGuide() {
+    // Open setup guide in new window/tab
+    const setupWindow = window.open('./setup-guide.html', '_blank', 'width=900,height=700,scrollbars=yes');
+    if (!setupWindow) {
+        // Fallback if popup blocked
+        alert('Please allow popups or manually navigate to: ./setup-guide.html');
+    }
+    return false;
+}
+
+function toggleBanner() {
+    const setupBanner = document.getElementById('setup-banner');
+    if (setupBanner) {
+        const isVisible = setupBanner.style.display !== 'none';
+        setupBanner.style.display = isVisible ? 'none' : 'block';
+        console.log(isVisible ? '🚫 Banner hidden' : '👁️ Banner shown');
+        
+        if (!isVisible) {
+            // Remove the dismissed flag to show banner
+            localStorage.removeItem('setup-banner-dismissed');
+        }
     }
 }
 
