@@ -6,7 +6,23 @@ let allListings = [];
 document.addEventListener("DOMContentLoaded", function() {
     updateSelectedButton();
     checkApiSetup();
+    setupManualSearchKeyboardSupport();
 });
+
+function setupManualSearchKeyboardSupport() {
+    // Add Enter key support for manual search inputs
+    const manualInputs = ['manual-city', 'manual-state'];
+    manualInputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performManualSearch();
+                }
+            });
+        }
+    });
+}
 
 function checkApiSetup() {
     // Check if user has previously dismissed the banner
@@ -18,6 +34,9 @@ function checkApiSetup() {
                               window.AI_CONFIG.OPENAI_API_KEY !== 'your_openai_api_key_here' &&
                               window.AI_CONFIG.OPENAI_API_KEY !== 'sk-YOUR_ACTUAL_OPENAI_KEY_HERE' &&
                               window.AI_CONFIG.OPENAI_API_KEY.length > 10;
+    
+    // Switch between AI and Manual search modes
+    switchSearchMode(hasValidOpenAIKey);
     
     const setupBanner = document.getElementById('setup-banner');
     
@@ -43,12 +62,44 @@ function checkApiSetup() {
     } else if (setupBanner) {
         setupBanner.style.display = 'none';
         if (hasValidOpenAIKey) {
-            console.log('✅ API setup complete');
+            console.log('✅ API setup complete - AI mode enabled');
             // Clear the dismissed flag if API is now configured
             localStorage.removeItem('setup-banner-dismissed');
         } else {
-            console.log('🚫 Setup banner dismissed by user');
+            console.log('🚫 Setup banner dismissed by user - Manual mode active');
         }
+    }
+}
+
+function switchSearchMode(aiEnabled) {
+    const aiSearchSection = document.getElementById('ai-search-section');
+    const manualSearchSection = document.getElementById('manual-search-section');
+    const aiControlPanel = document.getElementById('ai-control-panel');
+    const aiInsightsPanel = document.getElementById('ai-insights-panel');
+    const recommendationsSection = document.getElementById('recommendations-section');
+    
+    // Update page title
+    const pageTitle = document.querySelector('h1');
+    if (pageTitle) {
+        pageTitle.textContent = aiEnabled ? '🤖 AI-Powered Property Search' : '🔍 Property Search';
+    }
+    
+    if (aiEnabled) {
+        // Show AI interface
+        if (aiSearchSection) aiSearchSection.style.display = 'block';
+        if (manualSearchSection) manualSearchSection.style.display = 'none';
+        if (aiControlPanel) aiControlPanel.classList.remove('ai-disabled');
+        
+        console.log('🤖 AI search mode activated');
+    } else {
+        // Show manual interface and gray out AI features
+        if (aiSearchSection) aiSearchSection.style.display = 'none';
+        if (manualSearchSection) manualSearchSection.style.display = 'block';
+        if (aiControlPanel) aiControlPanel.classList.add('ai-disabled');
+        if (aiInsightsPanel) aiInsightsPanel.style.display = 'none';
+        if (recommendationsSection) recommendationsSection.style.display = 'none';
+        
+        console.log('🔍 Manual search mode activated');
     }
 }
 
@@ -83,6 +134,65 @@ function toggleBanner() {
             // Remove the dismissed flag to show banner
             localStorage.removeItem('setup-banner-dismissed');
         }
+    }
+}
+
+// Manual Search Functions
+function performManualSearch() {
+    const city = document.getElementById('manual-city').value.trim();
+    const state = document.getElementById('manual-state').value.trim();
+    const priceMin = document.getElementById('price-min').value;
+    const priceMax = document.getElementById('price-max').value;
+    const bedrooms = document.getElementById('bedrooms-filter').value;
+    const bathrooms = document.getElementById('bathrooms-filter').value;
+    
+    if (!city || !state) {
+        alert('Please enter both city and state to search for properties.');
+        return;
+    }
+    
+    console.log('🔍 Manual search initiated:', { city, state, priceMin, priceMax, bedrooms, bathrooms });
+    
+    // Build query parameters for RentCast API
+    let queryParams = `?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`;
+    
+    if (priceMin) queryParams += `&listPriceMin=${priceMin}`;
+    if (priceMax) queryParams += `&listPriceMax=${priceMax}`;
+    if (bedrooms) queryParams += `&bedroomsMin=${bedrooms}`;
+    if (bathrooms) queryParams += `&bathroomsMin=${bathrooms}`;
+    
+    // Add status filter for active listings only
+    queryParams += `&status=Active`;
+    
+    // Clear previous results and show loading
+    showLoadingState();
+    
+    // Use existing fetchAndDisplayListings function
+    fetchAndDisplayListings(queryParams);
+}
+
+function fillManualSearch(city, state, priceMin, priceMax, bedrooms, bathrooms) {
+    document.getElementById('manual-city').value = city || '';
+    document.getElementById('manual-state').value = state || '';
+    document.getElementById('price-min').value = priceMin || '';
+    document.getElementById('price-max').value = priceMax || '';
+    document.getElementById('bedrooms-filter').value = bedrooms || '';
+    document.getElementById('bathrooms-filter').value = bathrooms || '';
+    
+    // Auto-search after filling
+    setTimeout(() => performManualSearch(), 100);
+}
+
+function showLoadingState() {
+    const listingsContainer = document.getElementById('listings');
+    if (listingsContainer) {
+        listingsContainer.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #666;">
+                <div style="font-size: 24px; margin-bottom: 15px;">🔍</div>
+                <div style="font-size: 18px; font-weight: bold;">Searching Properties...</div>
+                <div style="font-size: 14px; margin-top: 10px;">Finding the best matches in your area</div>
+            </div>
+        `;
     }
 }
 

@@ -426,6 +426,230 @@ input:checked + .slider:before {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Manual Search Styles */
+.manual-search-section {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px auto;
+    max-width: 1200px;
+    color: white;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+}
+
+.manual-search-section h3 {
+    margin-bottom: 10px;
+    color: white;
+    text-align: center;
+    font-size: 1.8em;
+}
+
+.manual-search-form {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.search-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 15px;
+    align-items: end;
+    margin-bottom: 20px;
+}
+
+.search-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-field label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.manual-input {
+    padding: 12px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    background: white;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s;
+}
+
+.manual-input:focus {
+    outline: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.manual-search-button {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #ff6b6b, #ffa500);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.manual-search-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+.filters-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.filters-section h4 {
+    margin-bottom: 15px;
+    color: white;
+    font-size: 1.2em;
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.filter-select {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    color: #333;
+    cursor: pointer;
+}
+
+.quick-search-presets {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.quick-search-presets h4 {
+    margin-bottom: 15px;
+    color: white;
+    font-size: 1.2em;
+}
+
+.preset-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.preset-btn {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.preset-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-1px);
+}
+
+/* Disabled AI State */
+.ai-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    filter: grayscale(70%);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.ai-disabled::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    z-index: 5;
+}
+
+.ai-disabled::after {
+    content: "🔑 AI Setup Required - Click 'Setup Guide' Above";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #ff6b6b, #ffa500);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 10;
+    text-align: center;
+    white-space: nowrap;
+    max-width: 300px;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.ai-feature-card.ai-disabled {
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .ai-disabled::after {
+        content: "🔑 Setup Required";
+        font-size: 12px;
+        padding: 10px 15px;
+        max-width: 150px;
+        white-space: normal;
+    }
+}
+
+/* Mobile Responsive for Manual Search */
+@media (max-width: 768px) {
+    .search-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .filters-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .preset-buttons {
+        justify-content: center;
+    }
+}
+
 .ai-search-section {
     margin-bottom: 25px;
 }

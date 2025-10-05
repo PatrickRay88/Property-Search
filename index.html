@@ -149,8 +149,92 @@
     </div>
 
     <!-- Enhanced Search Container -->
-        <!-- AI-Powered Search Interface -->
-        <div class="ai-search-section">
+        <!-- Manual Search Interface (shown when AI is disabled) -->
+        <div class="manual-search-section" id="manual-search-section" style="display: none;">
+            <h3>🔍 Property Search</h3>
+            <p class="search-description">Search for properties by city, state, and filters</p>
+            
+            <div class="manual-search-form">
+                <div class="search-row">
+                    <div class="search-field">
+                        <label for="manual-city">City</label>
+                        <input type="text" id="manual-city" placeholder="e.g., Austin, Miami, Denver" class="manual-input">
+                    </div>
+                    <div class="search-field">
+                        <label for="manual-state">State</label>
+                        <input type="text" id="manual-state" placeholder="e.g., TX, FL, CO" class="manual-input" maxlength="2">
+                    </div>
+                    <button class="manual-search-button" onclick="performManualSearch()">🔍 Search Properties</button>
+                </div>
+                
+                <div class="filters-section">
+                    <h4>📋 Filters</h4>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label for="price-min">Min Price</label>
+                            <select id="price-min" class="filter-select">
+                                <option value="">Any</option>
+                                <option value="100000">$100,000+</option>
+                                <option value="200000">$200,000+</option>
+                                <option value="300000">$300,000+</option>
+                                <option value="400000">$400,000+</option>
+                                <option value="500000">$500,000+</option>
+                                <option value="750000">$750,000+</option>
+                                <option value="1000000">$1,000,000+</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="price-max">Max Price</label>
+                            <select id="price-max" class="filter-select">
+                                <option value="">Any</option>
+                                <option value="200000">$200,000</option>
+                                <option value="300000">$300,000</option>
+                                <option value="400000">$400,000</option>
+                                <option value="500000">$500,000</option>
+                                <option value="750000">$750,000</option>
+                                <option value="1000000">$1,000,000</option>
+                                <option value="2000000">$2,000,000</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="bedrooms-filter">Bedrooms</label>
+                            <select id="bedrooms-filter" class="filter-select">
+                                <option value="">Any</option>
+                                <option value="1">1+</option>
+                                <option value="2">2+</option>
+                                <option value="3">3+</option>
+                                <option value="4">4+</option>
+                                <option value="5">5+</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="bathrooms-filter">Bathrooms</label>
+                            <select id="bathrooms-filter" class="filter-select">
+                                <option value="">Any</option>
+                                <option value="1">1+</option>
+                                <option value="2">2+</option>
+                                <option value="3">3+</option>
+                                <option value="4">4+</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quick-search-presets">
+                    <h4>🏠 Popular Searches</h4>
+                    <div class="preset-buttons">
+                        <button class="preset-btn" onclick="fillManualSearch('Austin', 'TX', '', '400000', '3', '')">Austin Family Homes</button>
+                        <button class="preset-btn" onclick="fillManualSearch('Miami', 'FL', '', '500000', '2', '')">Miami Condos</button>
+                        <button class="preset-btn" onclick="fillManualSearch('Phoenix', 'AZ', '', '300000', '', '')">Phoenix Affordable</button>
+                        <button class="preset-btn" onclick="fillManualSearch('Denver', 'CO', '300000', '', '3', '')">Denver Family</button>
+                        <button class="preset-btn" onclick="fillManualSearch('Las Vegas', 'NV', '', '', '4', '')">Vegas Luxury</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI-Powered Search Interface (shown when AI is enabled) -->
+        <div class="ai-search-section" id="ai-search-section">
             <h3>🤖 Intelligent Property Search</h3>
             <p class="search-description">Describe your dream home in plain English and let AI find it for you</p>
             <div class="ai-search-input-container">
