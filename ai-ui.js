@@ -427,11 +427,40 @@ function updateAIControlPanel() {
     }
 }
 
+// Fallback function for traditional search (backwards compatibility)
+function searchListings() {
+    const cityInput = document.getElementById('city');
+    const stateInput = document.getElementById('state');
+    
+    if (!cityInput || !stateInput) {
+        // If traditional inputs don't exist, prompt for AI search
+        const query = prompt('Enter your search (e.g., "3 bedroom house in Austin TX"):');
+        if (query) {
+            document.getElementById('ai-search-input').value = query;
+            performAISearch();
+        }
+        return;
+    }
+    
+    const city = cityInput.value.trim();
+    const state = stateInput.value.trim();
+    
+    if (!city || !state) {
+        alert('Please use the AI search above for better results!');
+        return;
+    }
+    
+    // Convert to AI search format
+    const aiQuery = `Properties in ${city}, ${state}`;
+    document.getElementById('ai-search-input').value = aiQuery;
+    performAISearch();
+}
+
 // Initialize AI UI when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     window.aiUI = new AIUIController();
     
-    // Add some initial CSS for market insights
+    // Add some initial CSS for market insights and quick options
     const additionalStyles = document.createElement('style');
     additionalStyles.textContent = `
         .market-stats {
@@ -459,9 +488,21 @@ document.addEventListener('DOMContentLoaded', function() {
             color: white;
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 480px) {
             .market-stats {
                 grid-template-columns: 1fr;
+            }
+            
+            .quick-options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-option {
+                padding: 15px;
+            }
+            
+            .option-icon {
+                font-size: 1.5em;
             }
         }
     `;

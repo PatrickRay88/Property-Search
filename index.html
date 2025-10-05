@@ -127,9 +127,10 @@
     </div>
 
     <!-- Enhanced Search Container -->
-        <!-- AI Natural Language Search -->
+        <!-- AI-Powered Search Interface -->
         <div class="ai-search-section">
-            <h3>🤖 AI Search</h3>
+            <h3>🤖 Intelligent Property Search</h3>
+            <p class="search-description">Describe your dream home in plain English and let AI find it for you</p>
             <div class="ai-search-input-container">
                 <input type="text" id="ai-search-input" 
                        placeholder="Try: 'Find me a 3 bedroom house under $400k in Austin with good schools'" 
@@ -140,18 +141,31 @@
                 <span class="suggestion-chip" onclick="fillAISearch('3 bedroom house under 500k in Miami')">Miami starter home</span>
                 <span class="suggestion-chip" onclick="fillAISearch('Luxury condo with city view in San Francisco')">SF luxury condo</span>
                 <span class="suggestion-chip" onclick="fillAISearch('Family home near schools in Austin Texas')">Austin family home</span>
+                <span class="suggestion-chip" onclick="fillAISearch('Investment property under 300k in Phoenix')">Phoenix investment</span>
+                <span class="suggestion-chip" onclick="fillAISearch('Modern townhouse with garage in Denver')">Denver townhouse</span>
             </div>
-        </div>
-
-        <!-- Traditional Search (Fallback) -->
-        <div class="traditional-search-section">
-            <h3>🔍 Traditional Search</h3>
-            <div class="traditional-search-inputs">
-                <label for="city">City: </label>
-                <input type="text" id="city" placeholder="Enter city">
-                <label for="state">State: </label>
-                <input type="text" id="state" placeholder="Enter state">
-                <button class="search-button" onclick="searchListings()">Search</button>
+            
+            <!-- Quick Search Options -->
+            <div class="quick-search-options">
+                <h4>� Quick Search</h4>
+                <div class="quick-options-grid">
+                    <button class="quick-option" onclick="fillAISearch('First time buyer home under 350k')">
+                        <span class="option-icon">🏠</span>
+                        <span class="option-text">First Home</span>
+                    </button>
+                    <button class="quick-option" onclick="fillAISearch('Luxury home with pool and modern kitchen')">
+                        <span class="option-icon">🏖️</span>
+                        <span class="option-text">Luxury</span>
+                    </button>
+                    <button class="quick-option" onclick="fillAISearch('Investment property with high rental potential')">
+                        <span class="option-icon">💰</span>
+                        <span class="option-text">Investment</span>
+                    </button>
+                    <button class="quick-option" onclick="fillAISearch('Family home near top rated schools')">
+                        <span class="option-icon">👨‍👩‍👧‍👦</span>
+                        <span class="option-text">Family</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
