@@ -1,0 +1,27 @@
+{
+  "name": "property-search",
+  "version": "1.0.0",
+  "description": "A web application for searching real estate property listings using the RentCast API",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "test": "echo 'Open tests/test.html in your browser to run tests'",
+    "dev": "python -m http.server 8000"
+  },
+  "keywords": [
+    "real-estate",
+    "property-search",
+    "rentcast-api",
+    "javascript",
+    "html",
+    "css"
+  ],
+  "author": "PatrickRay88",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PatrickRay88/Property-Search.git"
+  },
+  "homepage": "https://github.com/PatrickRay88/Property-Search#readme",
+  "devDependencies": {}
+}

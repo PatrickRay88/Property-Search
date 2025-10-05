@@ -14,9 +14,6 @@ A web application for searching and filtering real estate property listings usin
 - 🎨 Clean, responsive user interface
 - 🔒 Secure API key management
 
-## Demo
-
-![Property Search Interface](https://via.placeholder.com/800x400?text=Property+Search+Interface)
 
 ## Getting Started
 
@@ -134,15 +131,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - [RentCast](https://www.rentcast.io/) for providing the real estate API
-- Contributors and testers who helped improve this application
 
-## Support
-
-If you encounter any issues or have questions:
-
-1. Check the [Issues](https://github.com/yourusername/Property-Search/issues) page
-2. Create a new issue if your problem isn't already reported
-3. Provide detailed information about your environment and the issue
 
 ## Roadmap
 
