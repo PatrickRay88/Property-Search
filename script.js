@@ -156,13 +156,19 @@ function performManualSearch() {
     // Build query parameters for RentCast API
     let queryParams = `?city=${encodeURIComponent(city)}&state=${encodeURIComponent(state)}`;
     
-    if (priceMin) queryParams += `&listPriceMin=${priceMin}`;
-    if (priceMax) queryParams += `&listPriceMax=${priceMax}`;
-    if (bedrooms) queryParams += `&bedroomsMin=${bedrooms}`;
-    if (bathrooms) queryParams += `&bathroomsMin=${bathrooms}`;
-    
-    // Add status filter for active listings only
+    // Add status filter for active listings only - this is the main filter that works reliably
     queryParams += `&status=Active`;
+    
+    console.log('🔍 Manual search URL parameters:', queryParams);
+    console.log('🔍 Client-side filters will be applied:', { priceMin, priceMax, bedrooms, bathrooms });
+    
+    // Store filter criteria for client-side filtering
+    window.manualSearchFilters = {
+        priceMin: priceMin ? parseInt(priceMin) : null,
+        priceMax: priceMax ? parseInt(priceMax) : null,
+        bedrooms: bedrooms ? parseInt(bedrooms) : null,
+        bathrooms: bathrooms ? parseInt(bathrooms) : null
+    };
     
     // Clear previous results and show loading
     showLoadingState();
@@ -185,6 +191,16 @@ function fillManualSearch(city, state, priceMin, priceMax, bedrooms, bathrooms) 
 
 function showLoadingState() {
     const listingsContainer = document.getElementById('listings');
+    const resultsCountContainer = document.getElementById('results-count');
+    
+    if (resultsCountContainer) {
+        resultsCountContainer.innerHTML = `
+            <div class="results-count-display loading">
+                🔍 Searching properties...
+            </div>
+        `;
+    }
+    
     if (listingsContainer) {
         listingsContainer.innerHTML = `
             <div style="text-align: center; padding: 40px; color: #666;">
@@ -194,6 +210,216 @@ function showLoadingState() {
             </div>
         `;
     }
+}
+
+function updateResultsCount(count) {
+    const resultsCountContainer = document.getElementById('results-count');
+    if (resultsCountContainer) {
+        resultsCountContainer.innerHTML = `
+            <div class="results-count-display">
+                📊 Found <strong>${count}</strong> properties matching your criteria
+            </div>
+        `;
+    }
+}
+
+function createPropertyList(properties) {
+    const listingsDiv = document.getElementById('listings');
+    
+    const start = (currentPage - 1) * listingsPerPage;
+    const end = start + listingsPerPage;
+    const paginatedListings = properties.slice(start, end);
+
+    const listHtml = `
+        <div class="property-list">
+            ${paginatedListings.map((property, index) => `
+                <div class="property-item" onclick="showPropertyDetails(${start + index})">
+                    <div class="property-main-info">
+                        <div class="property-address">
+                            <h3>${property.formattedAddress || 'Address not available'}</h3>
+                            <p class="property-location">${property.city || 'N/A'}, ${property.state || 'N/A'}</p>
+                        </div>
+                        <div class="property-price">
+                            <span class="price-label">Price</span>
+                            <span class="price-value">$${property.price ? property.price.toLocaleString() : 'N/A'}</span>
+                        </div>
+                    </div>
+                    <div class="property-quick-stats">
+                        <span class="stat-item">
+                            <span class="stat-icon">🛏️</span>
+                            <span class="stat-value">${property.bedrooms || 'N/A'} bed</span>
+                        </span>
+                        <span class="stat-item">
+                            <span class="stat-icon">🚿</span>
+                            <span class="stat-value">${property.bathrooms || 'N/A'} bath</span>
+                        </span>
+                        <span class="stat-item">
+                            <span class="stat-icon">📐</span>
+                            <span class="stat-value">${property.squareFootage ? property.squareFootage.toLocaleString() + ' sqft' : 'N/A'}</span>
+                        </span>
+                        <span class="stat-item">
+                            <span class="stat-icon">📅</span>
+                            <span class="stat-value">${property.daysOnMarket || 'N/A'} days</span>
+                        </span>
+                    </div>
+                    <div class="property-action">
+                        <span class="view-details">👁️ View Details</span>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    listingsDiv.innerHTML = listHtml;
+    
+    updatePagination();
+}
+
+function showPropertyDetails(index) {
+    const property = allListings[index];
+    if (!property) return;
+    
+    const modal = document.createElement('div');
+    modal.className = 'property-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>${property.formattedAddress || 'Property Details'}</h2>
+                <button class="modal-close" onclick="closePropertyModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="property-details-grid">
+                    <div class="detail-section">
+                        <h3>💰 Pricing Information</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">List Price:</span>
+                            <span class="detail-value">$${property.price ? property.price.toLocaleString() : 'N/A'}</span>
+                        </div>
+                        ${property.pricePerSquareFoot ? `
+                        <div class="detail-row">
+                            <span class="detail-label">Price per sqft:</span>
+                            <span class="detail-value">$${property.pricePerSquareFoot}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>🏠 Property Features</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">Bedrooms:</span>
+                            <span class="detail-value">${property.bedrooms || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Bathrooms:</span>
+                            <span class="detail-value">${property.bathrooms || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Square Footage:</span>
+                            <span class="detail-value">${property.squareFootage ? property.squareFootage.toLocaleString() + ' sqft' : 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Lot Size:</span>
+                            <span class="detail-value">${property.lotSize ? property.lotSize.toLocaleString() + ' sqft' : 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Year Built:</span>
+                            <span class="detail-value">${property.yearBuilt || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Property Type:</span>
+                            <span class="detail-value">${property.propertyType || 'N/A'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>📍 Location Details</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">Address:</span>
+                            <span class="detail-value">${property.formattedAddress || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">City:</span>
+                            <span class="detail-value">${property.city || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">State:</span>
+                            <span class="detail-value">${property.state || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">ZIP Code:</span>
+                            <span class="detail-value">${property.zipCode || 'N/A'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>📈 Market Information</h3>
+                        <div class="detail-row">
+                            <span class="detail-label">Days on Market:</span>
+                            <span class="detail-value">${property.daysOnMarket || 'N/A'} days</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">${property.status || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Listed Date:</span>
+                            <span class="detail-value">${property.dateListedString || property.dateListed || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Last Seen:</span>
+                            <span class="detail-value">${property.lastSeenString || property.lastSeen || 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closePropertyModal()">Close</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Add click outside to close
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closePropertyModal();
+        }
+    });
+}
+
+function closePropertyModal() {
+    const modal = document.querySelector('.property-modal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+function applyManualFilters(properties, filters) {
+    console.log('🔍 Applying manual filters:', filters);
+    console.log('🔍 Original property count:', properties.length);
+    
+    return properties.filter(property => {
+        // Price filtering
+        if (filters.priceMin && property.price && property.price < filters.priceMin) {
+            return false;
+        }
+        if (filters.priceMax && property.price && property.price > filters.priceMax) {
+            return false;
+        }
+        
+        // Bedroom filtering
+        if (filters.bedrooms && property.bedrooms && property.bedrooms < filters.bedrooms) {
+            return false;
+        }
+        
+        // Bathroom filtering  
+        if (filters.bathrooms && property.bathrooms && property.bathrooms < filters.bathrooms) {
+            return false;
+        }
+        
+        return true;
+    });
 }
 
 function setListingCount(count) {
@@ -227,6 +453,14 @@ function fetchAndDisplayListings(queryParams = '') {
 
         if (Array.isArray(data)) {
             allListings = data;
+            
+            // Apply client-side filtering if manual search filters are set
+            if (window.manualSearchFilters) {
+                allListings = applyManualFilters(allListings, window.manualSearchFilters);
+                console.log(`🔍 Applied manual filters. Results: ${allListings.length} properties`);
+                // Clear the filters after use
+                window.manualSearchFilters = null;
+            }
         } else {
             throw new Error('Unexpected API response structure');
         }
@@ -244,34 +478,30 @@ function displayListings(properties) {
     listingsDiv.innerHTML = ''; // Clear previous listings if any
 
     if (!properties || properties.length === 0) {
-        listingsDiv.innerHTML = '<p>No listings found. Please refine your search criteria.</p>';
+        const resultsCountContainer = document.getElementById('results-count');
+        if (resultsCountContainer) {
+            resultsCountContainer.innerHTML = `
+                <div class="results-count-display" style="background: linear-gradient(135deg, #ff6b6b, #ffa500);">
+                    📭 No properties found - Try adjusting your search criteria
+                </div>
+            `;
+        }
+        
+        listingsDiv.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #666;">
+                <div style="font-size: 24px; margin-bottom: 15px;">🏠</div>
+                <div style="font-size: 18px; font-weight: bold;">No properties found</div>
+                <div style="font-size: 14px; margin-top: 10px;">Try adjusting your search filters or expanding your search area</div>
+            </div>
+        `;
         return;
     }
-
-    const start = (currentPage - 1) * listingsPerPage;
-    const end = start + listingsPerPage;
-    const paginatedListings = properties.slice(start, end);
-
-    paginatedListings.forEach(property => {
-        const listing = document.createElement('div');
-        listing.className = 'listing';
-        listing.innerHTML = `
-            <h2>${property.formattedAddress}</h2>
-            <p><strong>Price:</strong> $${property.price}</p>
-            <p><strong>Property Type:</strong> ${property.propertyType}</p>
-            <p><strong>Bedrooms:</strong> ${property.bedrooms}</p>
-            <p><strong>Bathrooms:</strong> ${property.bathrooms}</p>
-            <p><strong>Square Footage:</strong> ${property.squareFootage} sqft</p>
-            <p><strong>Lot Size:</strong> ${property.lotSize ? property.lotSize + ' sqft' : 'N/A'}</p>
-            <p><strong>Year Built:</strong> ${property.yearBuilt}</p>
-            <p><strong>Listed Date:</strong> ${new Date(property.listedDate).toLocaleDateString()}</p>
-            <p><strong>Last Seen Date:</strong> ${new Date(property.lastSeenDate).toLocaleDateString()}</p>
-            <p><strong>Days on Market:</strong> ${property.daysOnMarket} days</p>
-        `;
-        listingsDiv.appendChild(listing);
-    });
-
-    updatePaginationButtons(properties.length);
+    
+    // Show total results count in separate area
+    updateResultsCount(properties.length);
+    
+    // Create list view instead of cards
+    createPropertyList(properties);
 }
 
 function updatePaginationButtons(totalListings) {
@@ -292,6 +522,19 @@ function prevPage() {
     if (currentPage > 1) {
         currentPage--;
         displayListings(allListings);
+    }
+}
+
+function updatePagination() {
+    const paginationDiv = document.getElementById('pagination');
+    const pageNumberSpan = document.getElementById('page-number');
+    const totalPages = Math.ceil(allListings.length / listingsPerPage);
+    
+    if (totalPages <= 1) {
+        paginationDiv.style.display = 'none';
+    } else {
+        paginationDiv.style.display = 'flex';
+        pageNumberSpan.textContent = `Page ${currentPage} of ${totalPages}`;
     }
 }
 
