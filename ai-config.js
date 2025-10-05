@@ -1,0 +1,29 @@
+// AI Configuration with Feature Toggles
+const AI_CONFIG = {
+    // API Keys - Add your actual keys here
+    OPENAI_API_KEY: 'your_openai_api_key_here',
+    GEMINI_API_KEY: 'your_gemini_api_key_here', 
+    
+    // Feature Toggle Settings
+    FEATURES: {
+        NATURAL_LANGUAGE_SEARCH: true,
+        SMART_RECOMMENDATIONS: true,
+        MARKET_INTELLIGENCE: false,
+        AUTO_SEARCH: false,
+        INVESTMENT_ANALYZER: false,
+        NEIGHBORHOOD_INSIGHTS: false
+    },
+    
+    // Cost and Usage Tracking
+    USAGE_TRACKING: true,
+    MAX_MONTHLY_COST: 25.00, // Dollar limit
+    COST_ALERTS: true,
+    
+    // Performance Settings
+    AI_MODEL_PREFERENCE: 'gpt-3.5-turbo', // Faster and cheaper
+    CACHE_RESPONSES: true,
+    RESPONSE_TIMEOUT: 10000 // 10 seconds
+};
+
+// Make config available globally
+window.AI_CONFIG = AI_CONFIG;

@@ -7,19 +7,170 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Updated Property Listings</h1>
+    <h1>🤖 AI-Powered Property Search</h1>
 
-    <div class="search-container">
-        <label for="city">City: </label>
-        <input type="text" id="city" placeholder="Enter city">
-        <label for="state">State: </label>
-        <input type="text" id="state" placeholder="Enter state">
-        <button class="search-button" onclick="searchListings()">Search</button>
+    <!-- AI Control Panel -->
+    <div class="ai-control-panel" id="ai-control-panel">
+        <h2>🎛️ AI Features Dashboard</h2>
+        <div class="ai-features-grid">
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <span class="feature-icon">🗣️</span>
+                    <span class="feature-name">Natural Language Search</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-nlp" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p class="feature-description">Search using plain English queries</p>
+                <div class="feature-stats" id="stats-nlp">
+                    <span class="usage-count">0 uses today</span>
+                    <span class="cost-estimate">~$0.01 per search</span>
+                </div>
+            </div>
+
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <span class="feature-icon">🎯</span>
+                    <span class="feature-name">Smart Recommendations</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-recommendations" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p class="feature-description">AI learns your preferences and suggests properties</p>
+                <div class="feature-stats" id="stats-recommendations">
+                    <span class="usage-count">0 uses today</span>
+                    <span class="cost-estimate">Free</span>
+                </div>
+            </div>
+
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <span class="feature-icon">📊</span>
+                    <span class="feature-name">Market Intelligence</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-market">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p class="feature-description">Get AI insights about market trends</p>
+                <div class="feature-stats" id="stats-market">
+                    <span class="usage-count">0 uses today</span>
+                    <span class="cost-estimate">~$0.005 per analysis</span>
+                </div>
+            </div>
+
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <span class="feature-icon">🔍</span>
+                    <span class="feature-name">Auto-Search Assistant</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-auto">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p class="feature-description">Background search with smart notifications</p>
+                <div class="feature-stats" id="stats-auto">
+                    <span class="usage-count">Disabled</span>
+                    <span class="cost-estimate">~$0.02 per day</span>
+                </div>
+            </div>
+
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <span class="feature-icon">💰</span>
+                    <span class="feature-name">Investment Analyzer</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-investment">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p class="feature-description">ROI analysis and investment insights</p>
+                <div class="feature-stats" id="stats-investment">
+                    <span class="usage-count">Disabled</span>
+                    <span class="cost-estimate">~$0.01 per property</span>
+                </div>
+            </div>
+
+            <div class="ai-feature-card">
+                <div class="feature-header">
+                    <span class="feature-icon">🏘️</span>
+                    <span class="feature-name">Neighborhood Insights</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggle-neighborhood">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <p class="feature-description">AI-powered area analysis and scoring</p>
+                <div class="feature-stats" id="stats-neighborhood">
+                    <span class="usage-count">Disabled</span>
+                    <span class="cost-estimate">~$0.015 per area</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ai-usage-summary">
+            <div class="usage-stat">
+                <span class="stat-label">Monthly Usage:</span>
+                <span class="stat-value" id="monthly-cost">$0.00</span>
+            </div>
+            <div class="usage-stat">
+                <span class="stat-label">Budget Limit:</span>
+                <span class="stat-value">$25.00</span>
+            </div>
+            <div class="usage-stat">
+                <span class="stat-label">AI Status:</span>
+                <span class="stat-value status-indicator" id="ai-status">🟢 Active</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Search Container -->
+        <!-- AI Natural Language Search -->
+        <div class="ai-search-section">
+            <h3>🤖 AI Search</h3>
+            <div class="ai-search-input-container">
+                <input type="text" id="ai-search-input" 
+                       placeholder="Try: 'Find me a 3 bedroom house under $400k in Austin with good schools'" 
+                       class="ai-search-input">
+                <button class="ai-search-button" onclick="performAISearch()">🤖 AI Search</button>
+            </div>
+            <div class="search-suggestions" id="search-suggestions">
+                <span class="suggestion-chip" onclick="fillAISearch('3 bedroom house under 500k in Miami')">Miami starter home</span>
+                <span class="suggestion-chip" onclick="fillAISearch('Luxury condo with city view in San Francisco')">SF luxury condo</span>
+                <span class="suggestion-chip" onclick="fillAISearch('Family home near schools in Austin Texas')">Austin family home</span>
+            </div>
+        </div>
+
+        <!-- Traditional Search (Fallback) -->
+        <div class="traditional-search-section">
+            <h3>🔍 Traditional Search</h3>
+            <div class="traditional-search-inputs">
+                <label for="city">City: </label>
+                <input type="text" id="city" placeholder="Enter city">
+                <label for="state">State: </label>
+                <input type="text" id="state" placeholder="Enter state">
+                <button class="search-button" onclick="searchListings()">Search</button>
+            </div>
+        </div>
     </div>
 
     <div class="button-container">
         <button id="btn-10" class="listings-button" onclick="setListingCount(10)">10 Listings</button>
         <button id="btn-50" class="listings-button" onclick="setListingCount(50)">50 Listings</button>
+    </div>
+
+    <!-- AI Insights Panel -->
+    <div class="ai-insights-panel" id="ai-insights-panel" style="display: none;">
+        <h3>🧠 AI Insights</h3>
+        <div id="ai-insights-content"></div>
+    </div>
+
+    <!-- Smart Recommendations Section -->
+    <div class="recommendations-section" id="recommendations-section" style="display: none;">
+        <h3>🎯 Perfect Matches for You</h3>
+        <div id="recommended-properties"></div>
     </div>
 
     <div id="listings" class="listings"></div>
@@ -30,7 +181,11 @@
         <button class="pagination-button" onclick="nextPage()">Next</button>
     </div>
 
+    <!-- AI Scripts -->
     <script src="config.js"></script>
+    <script src="ai-config.js"></script>
+    <script src="ai-system.js"></script>
     <script src="script.js"></script>
+    <script src="ai-ui.js"></script>
 </body>
 </html>
