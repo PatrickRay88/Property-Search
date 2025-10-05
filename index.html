@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Listings </title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Updated Property Listings</h1>
+
+    <div class="search-container">
+        <label for="city">City: </label>
+        <input type="text" id="city" placeholder="Enter city">
+        <label for="state">State: </label>
+        <input type="text" id="state" placeholder="Enter state">
+        <button class="search-button" onclick="searchListings()">Search</button>
+    </div>
+
+    <div class="button-container">
+        <button id="btn-10" class="listings-button" onclick="setListingCount(10)">10 Listings</button>
+        <button id="btn-50" class="listings-button" onclick="setListingCount(50)">50 Listings</button>
+    </div>
+
+    <div id="listings" class="listings"></div>
+
+    <div id="pagination" class="pagination">
+        <button class="pagination-button" onclick="prevPage()">Previous</button>
+        <span id="page-number"></span>
+        <button class="pagination-button" onclick="nextPage()">Next</button>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
