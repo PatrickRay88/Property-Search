@@ -5,7 +5,34 @@ let allListings = [];
 
 document.addEventListener("DOMContentLoaded", function() {
     updateSelectedButton();
+    checkApiSetup();
 });
+
+function checkApiSetup() {
+    // Check if OpenAI API key is properly configured
+    const hasValidOpenAIKey = window.AI_CONFIG && 
+                              window.AI_CONFIG.OPENAI_API_KEY && 
+                              window.AI_CONFIG.OPENAI_API_KEY !== 'your_openai_api_key_here' &&
+                              window.AI_CONFIG.OPENAI_API_KEY !== 'sk-YOUR_ACTUAL_OPENAI_KEY_HERE' &&
+                              window.AI_CONFIG.OPENAI_API_KEY.length > 10;
+    
+    const setupBanner = document.getElementById('setup-banner');
+    
+    if (!hasValidOpenAIKey && setupBanner) {
+        setupBanner.style.display = 'block';
+        console.log('🔑 API setup required - showing setup banner');
+    } else if (setupBanner) {
+        setupBanner.style.display = 'none';
+        console.log('✅ API setup complete');
+    }
+}
+
+function dismissSetupBanner() {
+    const setupBanner = document.getElementById('setup-banner');
+    if (setupBanner) {
+        setupBanner.style.display = 'none';
+    }
+}
 
 function setListingCount(count) {
     listingsPerPage = count;

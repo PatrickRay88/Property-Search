@@ -9,6 +9,21 @@
 <body>
     <h1>🤖 AI-Powered Property Search</h1>
 
+    <!-- Setup Notification Banner -->
+    <div class="setup-banner" id="setup-banner" style="display: none;">
+        <div class="setup-content">
+            <span class="setup-icon">🔑</span>
+            <div class="setup-text">
+                <strong>AI Setup Required</strong>
+                <p>To use AI features, add your OpenAI API key to <code>ai-config.js</code>. 
+                   <a href="https://platform.openai.com/api-keys" target="_blank">Get API Key</a> | 
+                   <a href="./SETUP_GUIDE.md" target="_blank">Setup Guide</a>
+                </p>
+            </div>
+            <button class="setup-dismiss" onclick="dismissSetupBanner()">×</button>
+        </div>
+    </div>
+
     <!-- AI Control Panel -->
     <div class="ai-control-panel" id="ai-control-panel">
         <h2>🎛️ AI Features Dashboard</h2>
